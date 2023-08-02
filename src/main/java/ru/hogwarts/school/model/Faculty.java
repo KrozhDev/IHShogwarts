@@ -1,7 +1,17 @@
 package ru.hogwarts.school.model;
 
+
+import nonapi.io.github.classgraph.json.Id;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+
+@Entity
 public class Faculty {
 
+    @javax.persistence.Id
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
     private String color;
@@ -10,6 +20,10 @@ public class Faculty {
         this.id = id;
         this.name = name;
         this.color = color;
+    }
+
+    public Faculty() {
+
     }
 
     public Long getId() {
@@ -35,4 +49,5 @@ public class Faculty {
     public void setColor(String color) {
         this.color = color;
     }
+
 }
