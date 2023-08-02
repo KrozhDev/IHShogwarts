@@ -2,8 +2,8 @@ package ru.hogwarts.school.model;
 
 import nonapi.io.github.classgraph.json.Id;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+import javax.persistence.*;
+
 
 @Entity
 public class Student {
