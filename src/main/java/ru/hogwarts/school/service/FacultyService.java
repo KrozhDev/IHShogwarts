@@ -2,11 +2,16 @@ package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.FacultyDTO;
+import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.model.StudentDTO;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -45,7 +50,17 @@ public class FacultyService {
     }
 
     public Collection<Faculty> getFacultyByColorOrName(String search) {
-        return facultyRepository.findFacultiesByNameIsContainingIgnoreCaseOrColorContainingIgnoreCase(search, search);
+        return getFacultyByColorOrName(search, search);
     }
 
+    public Collection<Faculty> getFacultyByColorOrName(String name, String color) {
+        return facultyRepository.findFacultiesByNameIsContainingIgnoreCaseOrColorContainingIgnoreCase(name, color);
+    }
+
+
+    public Set<StudentDTO> getFacultysStudents(Long facultyId) {
+        Faculty faculty = facultyRepository.findById(facultyId).orElseThrow(() -> new NotFoundException("Нет такого факультета"));
+        Set<StudentDTO> students = faculty.getStudents().stream().map(StudentDTO::new).collect(Collectors.toSet());
+        return students; //todo ошибка выбрасывается, но до контроллера ничего не доходит, в итоге получаю 500 ошибку
+    }
 }

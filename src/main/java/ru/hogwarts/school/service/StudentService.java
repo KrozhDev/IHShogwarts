@@ -2,7 +2,9 @@ package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.model.FacultyDTO;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
@@ -47,5 +49,10 @@ public class StudentService {
 
     public Collection<Student> findByAgeBetween(int min, int max) {
         return studentRepository.findStudentsByAgeBetween(min,max);
+    }
+
+    public FacultyDTO getStudentsFaculty(Long studentId) {
+        Student student = studentRepository.findById(studentId).orElseThrow(()-> new NotFoundException("Такого студента нет"));
+        return new FacultyDTO(student.getFaculty()); //todo ошибка выбрасывается, но до контроллера ничего не доходит, в итоге получаю 500 ошибку
     }
 }

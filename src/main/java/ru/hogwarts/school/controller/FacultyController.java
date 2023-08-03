@@ -5,11 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.model.FacultyDTO;
+import ru.hogwarts.school.model.StudentDTO;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/faculty")
@@ -66,20 +68,23 @@ public class FacultyController {
             Collection<Faculty> foundFaculties = facultyService.getFacultyByColorOrName(color);
             return ResponseEntity.ok(foundFaculties);
         } else
-//            if (isEmptyAndBlank(color))
+            if (color == null)
             {
             Collection<Faculty> foundFaculties = facultyService.getFacultyByColorOrName(name);
             return ResponseEntity.ok(foundFaculties);
         }
-//        else {
-//            Collection<Faculty> foundFaculties = facultyService.getFacultyByColorOrName(name, color);
-//            return ResponseEntity.ok(foundFaculties);
-//        }
+        else {
+            Collection<Faculty> foundFaculties = facultyService.getFacultyByColorOrName(name, color);
+            return ResponseEntity.ok(foundFaculties);
+        }
     }
 
-    private boolean isEmptyAndBlank(String string) {
-        return (string.isEmpty() && string.isBlank());
+    @GetMapping("get-facultys-students/{facultyId}")
+    public ResponseEntity<Set<StudentDTO>> getStudentsFaculty(@PathVariable Long facultyId) {
+        Set<StudentDTO> studentDTO = facultyService.getFacultysStudents(facultyId);
+        if (studentDTO == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(studentDTO);
     }
-
-
 }

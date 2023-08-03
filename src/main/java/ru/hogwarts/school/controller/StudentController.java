@@ -1,11 +1,10 @@
 package ru.hogwarts.school.controller;
 
-
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.model.FacultyDTO;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
@@ -62,6 +61,18 @@ public class StudentController {
         return studentService.findByAgeBetween(min, max);
     }
 
+    @GetMapping("get-students-faculty/{studentId}")
+    public ResponseEntity<FacultyDTO> getStudentsFaculty(@PathVariable Long studentId) {
+        FacultyDTO facultyDTO = studentService.getStudentsFaculty(studentId);
+        if (facultyDTO == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(facultyDTO);
+    }
 
+//        @GetMapping("get-students-faculty")
+//    public Faculty getStudentsFaculty(@RequestParam long studentId) {
+//        return studentService.findStudent(studentId).getFaculty();
+//    }
 
 }
