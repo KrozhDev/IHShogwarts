@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,4 +43,9 @@ public class FacultyService {
                 .filter(faculty -> faculty.getColor().equals(color))
                 .collect(Collectors.toList());
     }
+
+    public Collection<Faculty> getFacultyByColorOrName(String search) {
+        return facultyRepository.findFacultiesByNameIsContainingIgnoreCaseOrColorContainingIgnoreCase(search, search);
+    }
+
 }
