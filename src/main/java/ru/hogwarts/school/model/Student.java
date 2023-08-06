@@ -18,6 +18,7 @@ public class Student {
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 
+
     public Student() {
     }
 
@@ -60,4 +61,5 @@ public class Student {
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }
+
 }
