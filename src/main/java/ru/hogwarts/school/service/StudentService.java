@@ -9,6 +9,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -33,6 +34,12 @@ public class StudentService {
     }
 
     public Student editStudent(Student student) {
+        Optional<Student> byId = studentRepository.findById(student.getId());
+        byId.ifPresent(student1 -> {
+            student1.setAge(student.getAge());
+            student1.setName(student.getName());
+            student1.setFaculty(student.getFaculty());
+        });
         studentRepository.save(student);
         return student;
     }

@@ -61,6 +61,6 @@ public class FacultyService {
     public Set<StudentDTO> getFacultysStudents(Long facultyId) {
         Faculty faculty = facultyRepository.findById(facultyId).orElseThrow(() -> new NotFoundException("Нет такого факультета"));
         Set<StudentDTO> students = faculty.getStudents().stream().map(StudentDTO::new).collect(Collectors.toSet());
-        return students; //todo ошибка выбрасывается, но до контроллера ничего не доходит, в итоге получаю 500 ошибку
+        return students;
     }
 }

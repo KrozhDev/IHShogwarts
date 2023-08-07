@@ -54,12 +54,12 @@ public class FacultyController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("by-color")
+    @GetMapping("/by-color")
     public List<Faculty> getByColor(@RequestParam String color) {
         return facultyService.getByColor(color);
     }
 
-    @GetMapping("by-name-or-color")
+    @GetMapping("/by-name-or-color")
     public ResponseEntity<Collection<Faculty>> getByColorOrName(@RequestParam(required = false) String name,
                                                    @RequestParam(required = false) String color) {
         if (name == null && color == null) {
@@ -87,4 +87,6 @@ public class FacultyController {
         }
         return ResponseEntity.ok(studentDTO);
     }
+
+
 }
