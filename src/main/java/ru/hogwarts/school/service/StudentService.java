@@ -48,10 +48,8 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
 
-    public List<Student> getByAge(int age) {
-        return studentRepository.findAll().stream()
-                .filter(student -> student.getAge()==age)
-                .collect(Collectors.toList());
+    public Collection<Student> getByAge(int age) {
+        return studentRepository.findByAge(age);
     }
 
     public Collection<Student> findByAgeBetween(int min, int max) {

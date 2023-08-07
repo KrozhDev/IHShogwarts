@@ -51,11 +51,11 @@ public class StudentController {
     }
 
     @GetMapping("/by-age")
-    public List<Student> getByAge(@RequestParam int age) {
+    public Collection<Student> getByAge(@RequestParam int age) {
         return studentService.getByAge(age);
     }
 
-    @GetMapping("by-age-between")
+    @GetMapping("/by-age-between")
     public Collection<Student> getByAgeBetween(@RequestParam int min,
                                                @RequestParam int max) {
         return studentService.findByAgeBetween(min, max);
