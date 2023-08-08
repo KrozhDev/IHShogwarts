@@ -1,4 +1,4 @@
-package ru.hogwarts.school;
+package ru.hogwarts.school.controller;
 
 import org.hamcrest.Matchers;
 import org.json.JSONObject;
@@ -213,9 +213,5 @@ class SchoolApplicationTestsWebMvc {
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(name))
                 .andExpect(jsonPath("$.color").value(color));
-
     }
-
-
-
 }
