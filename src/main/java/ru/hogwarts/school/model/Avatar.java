@@ -16,17 +16,16 @@ public class Avatar {
     @javax.persistence.Id
     @Id
     @GeneratedValue
-    Long id;
-    String filePath;
-    long fileSize;
-    String mediaType;
+    private Long id;
+    private String filePath;
+    private long fileSize;
+    private String mediaType;
 
     @Lob
-    byte[] data;
+    private byte[] data;
 
-    @JsonIgnore
     @OneToOne
-    Student student;
+    private Student student;
 
     public Avatar() {
     }

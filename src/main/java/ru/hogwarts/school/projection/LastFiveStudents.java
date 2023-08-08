@@ -1,4 +1,4 @@
-package ru.hogwarts.school.model;
+package ru.hogwarts.school.projection;
 
 public interface LastFiveStudents {
 
@@ -7,6 +7,8 @@ public interface LastFiveStudents {
     String getName();
 
     Integer getAge();
+
+
 
 
 }

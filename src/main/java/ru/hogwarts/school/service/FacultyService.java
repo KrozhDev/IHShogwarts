@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.FacultyDTO;
-import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.model.StudentDTO;
+import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.Collection;

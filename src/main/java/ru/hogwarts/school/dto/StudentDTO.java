@@ -1,4 +1,6 @@
-package ru.hogwarts.school.model;
+package ru.hogwarts.school.dto;
+
+import ru.hogwarts.school.model.Student;
 
 public class StudentDTO {
 

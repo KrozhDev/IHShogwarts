@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.hogwarts.school.dto.AvatarDTO;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
@@ -17,6 +18,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -47,7 +49,8 @@ public class AvatarService {
              BufferedOutputStream bos = new BufferedOutputStream(os, 1024);) {
 
             bis.transferTo(bos);
-        };
+        }
+        ;
 
         Avatar avatar = findAvatar(studentId);
         avatar.setStudent(student);
@@ -62,15 +65,15 @@ public class AvatarService {
     private byte[] generateImagePreview(Path filePath) throws IOException {
         try (InputStream is = Files.newInputStream(filePath);
              BufferedInputStream bis = new BufferedInputStream(is, 1024);
-             ByteArrayOutputStream baos = new ByteArrayOutputStream();){
+             ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
             BufferedImage image = ImageIO.read(bis);
-            int height = image.getHeight() / (image.getWidth()/100); //уменьшаем файл до ширины 100 пикселей
-            BufferedImage preview = new BufferedImage(100, height,image.getType());
+            int height = image.getHeight() / (image.getWidth() / 100); //уменьшаем файл до ширины 100 пикселей
+            BufferedImage preview = new BufferedImage(100, height, image.getType());
             Graphics2D graphics = preview.createGraphics();
-            graphics.drawImage(image,0,0,100,height,null);
+            graphics.drawImage(image, 0, 0, 100, height, null);
             graphics.dispose();
 
-            ImageIO.write(preview,getExtention(filePath.getFileName().toString()), baos);
+            ImageIO.write(preview, getExtention(filePath.getFileName().toString()), baos);
             return baos.toByteArray();
         }
 
@@ -85,8 +88,11 @@ public class AvatarService {
         return filename.substring(filename.lastIndexOf('.') + 1);
     }
 
-    public Collection<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
+    public Collection<AvatarDTO> getAllAvatars(Integer pageNumber, Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
-        return avatarRepository.findAll(pageRequest).getContent();
+        return avatarRepository.findAll(pageRequest).getContent().stream()
+                .map(avatar -> new AvatarDTO(avatar.getId(), avatar.getFilePath(), avatar.getFileSize(), avatar.getMediaType(),avatar.getData()))
+                .collect(Collectors.toList());
     }
+
 }
