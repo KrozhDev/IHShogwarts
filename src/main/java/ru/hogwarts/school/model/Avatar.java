@@ -1,5 +1,6 @@
 package ru.hogwarts.school.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import nonapi.io.github.classgraph.json.Id;
 
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,7 @@ public class Avatar {
     @Lob
     byte[] data;
 
+    @JsonIgnore
     @OneToOne
     Student student;
 
