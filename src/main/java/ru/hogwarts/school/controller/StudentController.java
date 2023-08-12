@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.projection.LastFiveStudents;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.dto.StudentDTO;
 import ru.hogwarts.school.dto.FacultyDTO;
 import ru.hogwarts.school.service.StudentService;
 
@@ -50,8 +51,9 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
+
     @GetMapping("/by-age")
-    public Collection<Student> getByAge(@RequestParam int age) {
+    public Collection<StudentDTO> getByAge(@RequestParam int age) {
         return studentService.getByAge(age);
     }
 
