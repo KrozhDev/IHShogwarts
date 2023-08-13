@@ -87,5 +87,14 @@ public class FacultyController {
         return ResponseEntity.ok(studentDTO);
     }
 
+    @GetMapping("get-the-longest-faculty-name")
+    public ResponseEntity<String> getTheLongestFacultyName() {
+        String theLongestFacultyName = facultyService.getTheLongestFacultyName();
+        if (theLongestFacultyName == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(theLongestFacultyName);
+    }
+
 
 }

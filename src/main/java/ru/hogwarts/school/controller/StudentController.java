@@ -72,23 +72,37 @@ public class StudentController {
         return ResponseEntity.ok(facultyDTO);
     }
 
-//        @GetMapping("get-students-faculty")
-//    public Faculty getStudentsFaculty(@RequestParam long studentId) {
-//        return studentService.findStudent(studentId).getFaculty();
-//    }
-
     @GetMapping("count")
     public Integer countAllStudents() {
         return studentService.countAllStudents();
     }
 
-    @GetMapping("average-age")
+    @GetMapping("/average-age/")
     public Double getAverageAge() {
         return studentService.getAverageAge();
     }
 
-    @GetMapping("last-five")
+    @GetMapping("/last-five")
     public Collection<LastFiveStudents> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
+    }
+
+    @GetMapping("/all-names-from-a-uppercase")
+    public ResponseEntity<Collection<String>> getNamesFromAInUppercase() {
+        Collection<String> namesFromAInUppercase = studentService.getNamesFromAInUppercase();
+        if (namesFromAInUppercase.size() == 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(namesFromAInUppercase);
+    }
+
+    @GetMapping("/get-some-integer")
+    public ResponseEntity<Integer> getSomeInteger() {
+        Integer integer = studentService.getSomeInteger();
+        if (integer == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(integer);
+
     }
 }

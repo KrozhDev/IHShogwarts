@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -83,15 +84,48 @@ public class StudentService {
         return studentRepository.countAllStudents();
     }
 
+//    public Double getAverageAge() {
+//        if (studentRepository.countAllStudents() != 0) {
+//            return studentRepository.getAverageAge();
+//        } else {
+//            return 0D;
+//        }
+//    }
+
     public Double getAverageAge() {
-        if (studentRepository.countAllStudents() != 0) {
-            return studentRepository.getAverageAge();
-        } else {
-            return 0D;
-        }
+        return studentRepository.findAll().stream()
+                .map(Student::getAge)
+                .mapToInt(s -> s)
+                .average().orElse(0);
+
     }
+
+
 
     public Collection<LastFiveStudents> getLastFiveStudents() {
         return studentRepository.getLastFiveStudents();
+    }
+
+    public Collection<String> getNamesFromAInUppercase() {
+        return studentRepository.findAll().stream()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .filter(name -> name.startsWith("A"))
+                .sorted()
+                .collect(Collectors.toList());
+
+    }
+
+    public Integer getSomeInteger() {
+        long startTime = System.currentTimeMillis();
+        int sum = Stream.iterate(1, a -> a +1)
+                .limit(1_000_000)
+                .parallel()
+                .reduce(0, (a, b) -> a + b );
+        long endTime = System.currentTimeMillis();
+        logger.debug("The operation takes {} ms",endTime - startTime);
+        return sum;
+
+
     }
 }
