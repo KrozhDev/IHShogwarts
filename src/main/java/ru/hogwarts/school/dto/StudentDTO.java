@@ -2,6 +2,8 @@ package ru.hogwarts.school.dto;
 
 import ru.hogwarts.school.model.Student;
 
+import java.util.Objects;
+
 public class StudentDTO {
 
     private Long id;
@@ -37,4 +39,6 @@ public class StudentDTO {
     public void setAge(int age) {
         this.age = age;
     }
+
+
 }

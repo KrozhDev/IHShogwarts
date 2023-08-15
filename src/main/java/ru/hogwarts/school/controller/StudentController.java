@@ -103,6 +103,15 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok(integer);
+    }
 
+    @GetMapping("/get-students-names-by-parallel-streams1")
+    public void getStudentsNamesByParallelStreams1() {
+        studentService.getStudentsNamesByParallelStreams1();
+    }
+
+    @GetMapping("/get-students-names-by-parallel-streams2")
+    public void getStudentsNamesByParallelStreams2() {
+        studentService.getStudentsNamesByParallelStreams2();
     }
 }

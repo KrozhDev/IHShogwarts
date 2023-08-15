@@ -11,9 +11,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.dto.FacultyDTO;
 import ru.hogwarts.school.repository.StudentRepository;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,6 +22,8 @@ public class StudentService {
     private final StudentRepository studentRepository;
 
     Logger logger = LoggerFactory.getLogger(StudentService.class);
+
+    static int index = 0;
 
 
     @Autowired
@@ -70,12 +70,12 @@ public class StudentService {
 
     public Collection<Student> findByAgeBetween(int min, int max) {
         logger.debug("Searching for students between ages {} and {} ...", min, max);
-        return studentRepository.findStudentsByAgeBetween(min,max);
+        return studentRepository.findStudentsByAgeBetween(min, max);
     }
 
     public FacultyDTO getStudentsFaculty(Long studentId) {
         logger.debug("Searching for a students faculty... by id {}", studentId);
-        Student student = studentRepository.findById(studentId).orElseThrow(()-> new NotFoundException("Такого студента нет"));
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new NotFoundException("Такого студента нет"));
         return new FacultyDTO(student.getFaculty()); //todo ошибка выбрасывается, но до контроллера ничего не доходит, в итоге получаю 500 ошибку
     }
 
@@ -101,7 +101,6 @@ public class StudentService {
     }
 
 
-
     public Collection<LastFiveStudents> getLastFiveStudents() {
         return studentRepository.getLastFiveStudents();
     }
@@ -118,14 +117,92 @@ public class StudentService {
 
     public Integer getSomeInteger() {
         long startTime = System.currentTimeMillis();
-        int sum = Stream.iterate(1, a -> a +1)
+        int sum = Stream.iterate(1, a -> a + 1)
                 .limit(1_000_000)
                 .parallel()
-                .reduce(0, (a, b) -> a + b );
+                .reduce(0, (a, b) -> a + b);
         long endTime = System.currentTimeMillis();
-        logger.debug("The operation takes {} ms",endTime - startTime);
+        logger.debug("The operation takes {} ms", endTime - startTime);
         return sum;
 
 
+    }
+
+    public void getStudentsNamesByParallelStreams1() {
+        List<String> studentList = studentRepository.findAll().stream()
+                .map(Student::getName)
+                .sorted()
+                .toList();
+
+
+        logger.info("Контрольный вывод списка имен");
+        studentList.forEach(System.out::println);
+
+
+        logger.info("Запускаю потоки");
+        Thread thread1 = new Thread(() -> print(studentList, 0, "Поток 1 работает"));
+        thread1.start();
+        Thread thread2 = new Thread(() -> print(studentList, 2, "Поток 2 работает"));
+        thread2.start();
+        Thread thread3 = new Thread(() -> print(studentList, 4,"Поток 3 работает"));
+        thread3.start();
+    }
+
+    private void print(List<String> names, int index, String name) {
+        System.out.println(name);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(names.get(index++));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(names.get(index));
+    }
+
+    public void getStudentsNamesByParallelStreams2() {
+
+
+
+        List<String> studentList = studentRepository.findAll().stream()
+                .map(Student::getName)
+                .sorted()
+                .toList();
+
+
+        logger.info("Контрольный вывод списка имен");
+        studentList.forEach(System.out::println);
+
+
+        logger.info("Запускаю потоки");
+
+            Thread thread1 = new Thread(() -> print2(studentList, "Поток 1 работает"));
+            thread1.start();
+            Thread thread2 = new Thread(() -> print2(studentList,"Поток 2 работает"));
+            thread2.start();
+            Thread thread3 = new Thread(() -> print2(studentList,"Поток 3 работает"));
+            thread3.start();
+            index = 0;
+
+    }
+
+    private synchronized void print2(List<String> names, String name) {
+        System.out.println(name);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(names.get(index++));
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(names.get(index++));
     }
 }
